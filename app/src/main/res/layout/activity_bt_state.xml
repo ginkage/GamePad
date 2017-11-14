@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/bt_toggling">
+  <TextView android:id="@+id/title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="18sp"
+      android:text="@string/pref_bluetooth_turningOn" />
+  <Space
+      android:id="@+id/spacer_top"
+      android:layout_width="0dp"
+      android:layout_height="8dp" />
+  <ProgressBar
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      style="@android:style/Widget.Material.ProgressBar.Large" />
+  <Space
+      android:id="@+id/spacer_bottom"
+      android:layout_width="0dp"
+      android:layout_height="8dp" />
+  <TextView android:id="@+id/text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textSize="16sp"
+      android:text="@string/please_wait" />
+</LinearLayout>

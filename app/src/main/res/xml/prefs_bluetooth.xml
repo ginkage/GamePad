@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/pref_bluetooth">
+    <Preference
+            android:key="pref_bluetoothScan"
+            android:title="@string/pref_bluetoothAvailable"
+            android:icon="@drawable/ic_search"
+            android:order="200"
+            android:fragment="com.ginkage.gamepad.ui.BluetoothScanFragment" />
+</PreferenceScreen>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/icon_background_shape" />
+    <item
+        android:bottom="@dimen/settings_list_icon_margin"
+        android:left="@dimen/settings_list_icon_margin"
+        android:right="@dimen/settings_list_icon_margin"
+        android:top="@dimen/settings_list_icon_margin">
+        <vector
+            android:width="@dimen/settings_list_icon_size"
+            android:height="@dimen/settings_list_icon_size"
+            android:tint="@color/icon_color"
+            android:viewportHeight="@integer/setting_list_icon_viewport_size"
+            android:viewportWidth="@integer/setting_list_icon_viewport_size">
+            <path
+                android:pathData="M15.500000,14.000000l-0.800000,0.000000l-0.300000,-0.300000c1.000000,-1.100000 1.600000,-2.600000 1.600000,-4.200000C16.000000,5.900000 13.100000,3.000000 9.500000,3.000000S3.000000,5.900000 3.000000,9.500000S5.900000,16.000000 9.500000,16.000000c1.600000,0.000000 3.100000,-0.600000 4.200000,-1.600000l0.300000,0.300000l0.000000,0.800000l5.000000,5.000000l1.500000,-1.500000L15.500000,14.000000zM9.500000,14.000000C7.000000,14.000000 5.000000,12.000000 5.000000,9.500000S7.000000,5.000000 9.500000,5.000000S14.000000,7.000000 14.000000,9.500000S12.000000,14.000000 9.500000,14.000000z"
+                android:fillColor="#757575"/>
+        </vector>
+    </item>
+</layer-list>

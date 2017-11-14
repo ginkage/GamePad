@@ -9,7 +9,7 @@ public class GamepadState {
   public boolean r1;
   public boolean l3;
   public boolean r3;
-  public boolean power;
+  public boolean start;
   public boolean back;
   public boolean home;
 

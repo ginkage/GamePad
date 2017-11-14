@@ -355,13 +355,13 @@
       app:layout_constraintTop_toTopOf="@+id/guideline_h25"/>
 
   <Button
-      android:id="@+id/button_power"
+      android:id="@+id/button_start"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:layout_marginBottom="16dp"
       android:layout_marginEnd="8dp"
       android:layout_marginStart="8dp"
-      android:text="Power"
+      android:text="Start"
       app:layout_constraintBottom_toTopOf="@+id/guideline_horz"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vb2"
       app:layout_constraintStart_toStartOf="@+id/guideline_vb1"

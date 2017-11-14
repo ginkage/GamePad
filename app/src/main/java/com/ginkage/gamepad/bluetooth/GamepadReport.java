@@ -23,7 +23,7 @@ public class GamepadReport {
     gamepadData[0] |= (byte) (s.l3 ? 0x40 : 0);
     gamepadData[0] |= (byte) (s.r3 ? 0x80 : 0);
     gamepadData[1] = 0;
-    gamepadData[1] |= (byte) (s.power ? 0x01 : 0);
+    gamepadData[1] |= (byte) (s.start ? 0x01 : 0);
     gamepadData[1] |= (byte) (s.back ? 0x02 : 0);
     gamepadData[1] |= (byte) (s.home ? 0x04 : 0);
     gamepadData[1] |= (byte) (s.dpad << 4);

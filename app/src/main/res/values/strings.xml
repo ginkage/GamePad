@@ -1,3 +1,47 @@
-<resources>
-  <string name="app_name">GamePad</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Name of the app in launcher [CHAR LIMIT=NONE] -->
+    <string name="app_name">GamePad</string>
+
+    <!-- Prompt to wait for Bluetooth to turn on [CHAR_LIMIT=16] -->
+    <string name="please_wait">Please wait\u2026</string>
+    <!-- Generic text to indicate that a setting is disabled. Should be in all caps. [CHAR LIMIT=40] -->
+    <string name="generic_disabled">OFF</string>
+    <!-- Button label for generic cancel action [CHAR LIMIT=20] -->
+    <string name="cancel">Cancel</string>
+
+    <!-- The title of the activity for managing paired bluetooth devices [CHAR LIMIT=40] -->
+    <string name="pref_bluetooth">Paired devices</string>
+    <!-- The title of the category for unpaired bluetooth devices available to pair with. [CHAR_LIMIT=40] -->
+    <string name="pref_bluetoothAvailable">Available devices</string>
+    <!-- Title of the list item to be clicked on when the user wants to trigger a new bluetooth device discovery process. [CHAR_LIMIT=60] -->
+    <string name="pref_bluetoothScan">Scan for nearby devices</string>
+    <!-- Message to be shown during the bluetooth device discovery process. [CHAR_LIMIT=60] -->
+    <string name="pref_bluetoothScan_scanning">Scanning for nearby devices\u2026</string>
+    <!-- Action to connect to a paired Bluetooth device. [CHAR_LIMIT=60] -->
+    <string name="pref_bluetooth_connect">Connect</string>
+    <!-- Action to disconnect from a connected paired Bluetooth device. [CHAR_LIMIT=60] -->
+    <string name="pref_bluetooth_disconnect">Disconnect</string>
+    <!-- Action to select a connected paired Bluetooth device. [CHAR_LIMIT=60] -->
+    <string name="pref_bluetooth_select">Select</string>
+    <!-- Message which is shown on entering the bluetooth settings when bluetooth is enabling. [CHAR_LIMIT=100] -->
+    <string name="pref_bluetooth_turningOn">Bluetooth turning on\u2026</string>
+    <!-- Message which is shown on entering the bluetooth settings when bluetooth is disabling. [CHAR_LIMIT=100] -->
+    <string name="pref_bluetooth_turningOff">Bluetooth turning off\u2026</string>
+    <!-- The connection status of an unpaired remote bluetooth device. It means the device is available for pairing. [CHAR_LIMIT=40] -->
+    <string name="pref_bluetooth_available">Available</string>
+    <!-- The profile availability of the remote device. It means no shared profiles between the two devices. [CHAR_LIMIT=40] -->
+    <string name="pref_bluetooth_unavailable">Unavailable</string>
+    <!-- The connection status of a remote bluetooth device which is currently being paired with. [CHAR_LIMIT=40] -->
+    <string name="pref_bluetooth_pairing">Pairing\u2026</string>
+    <!-- The connection status of a paired remote bluetooth device. [CHAR_LIMIT=40] -->
+    <string name="pref_bluetooth_connecting">Connecting\u2026</string>
+    <!-- The connection status of a paired remote bluetooth device. [CHAR_LIMIT=40] -->
+    <string name="pref_bluetooth_connected">Connected</string>
+    <!-- The connection status of a paired remote bluetooth device. [CHAR_LIMIT=40] -->
+    <string name="pref_bluetooth_disconnecting">Disconnecting\u2026</string>
+    <!-- The connection status of a paired remote bluetooth device. [CHAR_LIMIT=40] -->
+    <string name="pref_bluetooth_disconnected">Disconnected</string>
+    <!-- The ability to forget a shared bluetooth device. [CHAR_LIMIT=40] -->
+    <string name="pref_bluetooth_forget">Forget</string>
+
 </resources>

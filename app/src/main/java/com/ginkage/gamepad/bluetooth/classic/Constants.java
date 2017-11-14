@@ -11,7 +11,7 @@ class Constants {
       (byte) 0xA1, (byte) 0x01, // Collection (Application)
       (byte) 0x85, ID_GAMEPAD,  //   Report ID
 
-// 11 buttons: A, B, X, Y, L1, R1, L3, R3, Power, Back, Home (1 bit per button)
+// 11 buttons: A, B, X, Y, L1, R1, L3, R3, Start, Back, Home (1 bit per button)
 
       (byte) 0x05, (byte) 0x09, //   Usage Page (Button)
       (byte) 0x09, (byte) 0x01, //   Usage (0x01 - A)
@@ -22,7 +22,7 @@ class Constants {
       (byte) 0x09, (byte) 0x08, //   Usage (0x08 - R1)
       (byte) 0x09, (byte) 0x0E, //   Usage (0x0E - L3)
       (byte) 0x09, (byte) 0x0F, //   Usage (0x0F - R3)
-      (byte) 0x09, (byte) 0x0C, //   Usage (0x0D - Power)
+      (byte) 0x09, (byte) 0x0C, //   Usage (0x0D - Start)
       (byte) 0x05, (byte) 0x0C, //   Usage Page (Consumer)
       (byte) 0x0A, (byte) 0x24, (byte) 0x02, //   Usage (AC Back)
       (byte) 0x0A, (byte) 0x23, (byte) 0x02, //   Usage (AC Home)
