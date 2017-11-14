@@ -12,49 +12,56 @@
       android:id="@+id/button_l1"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="32dp"
-      android:layout_marginBottom="32dp"
-      android:layout_marginStart="16dp"
+      android:layout_marginBottom="16dp"
       android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
       android:text="L1"
       app:layout_constraintBottom_toTopOf="@+id/guideline_horz"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vert_25"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"/>
+
   <Button
       android:id="@+id/button_r1"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="32dp"
-      android:layout_marginBottom="32dp"
-      android:layout_marginStart="16dp"
+      android:layout_marginBottom="16dp"
       android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
       android:text="R1"
       app:layout_constraintBottom_toTopOf="@+id/guideline_horz"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="@+id/guideline_vert_75"
       app:layout_constraintTop_toTopOf="parent"/>
+
   <SeekBar
       android:id="@+id/seekbar_l2"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
       android:layout_marginBottom="8dp"
-      android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      android:max="255"
+      android:progress="0"
       android:rotation="180"
       app:layout_constraintBottom_toTopOf="@+id/guideline_h25"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vert_50"
       app:layout_constraintStart_toStartOf="@+id/guideline_vert_25"
       app:layout_constraintTop_toTopOf="parent"/>
+
   <SeekBar
       android:id="@+id/seekbar_r2"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
       android:layout_marginBottom="8dp"
-      android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      android:max="255"
+      android:progress="0"
       app:layout_constraintBottom_toTopOf="@+id/guideline_h25"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vert_75"
       app:layout_constraintStart_toStartOf="@+id/guideline_vert_50"
@@ -64,33 +71,40 @@
       android:id="@+id/button_y"
       android:layout_width="0dp"
       android:layout_height="0dp"
+      android:layout_marginEnd="8dp"
       android:text="Y"
       app:layout_constraintBottom_toTopOf="@+id/guideline_h1"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="@+id/guideline_b1"
       app:layout_constraintTop_toTopOf="@+id/guideline_horz"/>
+
   <Button
       android:id="@+id/button_x"
       android:layout_width="0dp"
       android:layout_height="0dp"
+      android:layout_marginStart="8dp"
       android:text="X"
       app:layout_constraintBottom_toTopOf="@+id/guideline_h2"
       app:layout_constraintEnd_toStartOf="@+id/guideline_b2"
       app:layout_constraintStart_toStartOf="@+id/guideline_vert_75"
       app:layout_constraintTop_toTopOf="@+id/guideline_h1"/>
+
   <Button
       android:id="@+id/button_b"
       android:layout_width="0dp"
       android:layout_height="0dp"
+      android:layout_marginEnd="8dp"
       android:text="B"
       app:layout_constraintBottom_toTopOf="@+id/guideline_h3"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="@+id/guideline_b1"
       app:layout_constraintTop_toTopOf="@+id/guideline_h2"/>
+
   <Button
       android:id="@+id/button_a"
       android:layout_width="0dp"
       android:layout_height="0dp"
+      android:layout_marginStart="8dp"
       android:text="A"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@+id/guideline_b2"
@@ -102,12 +116,13 @@
       android:layout_height="wrap_content"
       android:orientation="vertical"
       app:layout_constraintGuide_percent="0.25"/>
+
   <android.support.constraint.Guideline
       android:id="@+id/guideline_horz"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.5"/>
+      app:layout_constraintGuide_percent="0.36"/>
   <android.support.constraint.Guideline
       android:id="@+id/guideline_vert_50"
       android:layout_width="wrap_content"
@@ -120,18 +135,17 @@
       android:layout_height="wrap_content"
       android:orientation="vertical"
       app:layout_constraintGuide_percent="0.75"/>
+
   <android.support.constraint.ConstraintLayout
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginBottom="16dp"
-      android:layout_marginStart="16dp"
-      android:layout_marginEnd="16dp"
+      android:layout_marginStart="8dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vert_25"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@+id/guideline_horz">
+      app:layout_constraintTop_toTopOf="@+id/guideline_horz"
+      app:layout_constraintVertical_bias="0.0">
 
     <ImageView
         android:id="@+id/dpad"
@@ -168,18 +182,17 @@
         app:layout_constraintWidth_percent=".4"/>
 
   </android.support.constraint.ConstraintLayout>
+
   <android.support.constraint.ConstraintLayout
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginBottom="16dp"
-      android:layout_marginStart="16dp"
-      android:layout_marginEnd="16dp"
+      android:layout_marginBottom="8dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vert_50"
       app:layout_constraintStart_toStartOf="@+id/guideline_vert_25"
-      app:layout_constraintTop_toTopOf="@+id/guideline_horz">
+      app:layout_constraintTop_toTopOf="@+id/guideline_horz"
+      app:layout_constraintVertical_bias="1.0">
 
     <ImageView
         android:id="@+id/stick_left"
@@ -197,8 +210,8 @@
         android:id="@+id/button_l3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="0dp"
         android:background="@android:color/transparent"
+        android:padding="0dp"
         android:scaleType="fitXY"
         android:src="@drawable/background_circle"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -210,19 +223,29 @@
         app:layout_constraintWidth_default="percent"
         app:layout_constraintWidth_percent=".4"/>
 
+    <TextView
+        android:id="@+id/textViewL3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="L3"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/button_l3"
+        app:layout_constraintEnd_toEndOf="@+id/button_l3"
+        app:layout_constraintStart_toStartOf="@+id/button_l3"
+        app:layout_constraintTop_toTopOf="@+id/button_l3"/>
+
   </android.support.constraint.ConstraintLayout>
+
   <android.support.constraint.ConstraintLayout
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginBottom="16dp"
-      android:layout_marginStart="16dp"
-      android:layout_marginEnd="16dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vert_75"
       app:layout_constraintStart_toStartOf="@+id/guideline_vert_50"
-      app:layout_constraintTop_toTopOf="@+id/guideline_horz">
+      app:layout_constraintTop_toTopOf="@+id/guideline_horz"
+      app:layout_constraintVertical_bias="0.0">
 
     <ImageView
         android:id="@+id/stick_right"
@@ -240,8 +263,8 @@
         android:id="@+id/button_r3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="0dp"
         android:background="@android:color/transparent"
+        android:padding="0dp"
         android:scaleType="fitXY"
         android:src="@drawable/background_circle"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -252,6 +275,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_default="percent"
         app:layout_constraintWidth_percent=".4"/>
+
+    <TextView
+        android:id="@+id/textViewR3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="R3"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/button_r3"
+        app:layout_constraintEnd_toEndOf="@+id/button_r3"
+        app:layout_constraintStart_toStartOf="@+id/button_r3"
+        app:layout_constraintTop_toTopOf="@+id/button_r3"/>
 
   </android.support.constraint.ConstraintLayout>
   <android.support.constraint.Guideline
@@ -266,30 +301,33 @@
       android:layout_height="wrap_content"
       android:orientation="vertical"
       app:layout_constraintGuide_percent="0.9167"/>
+
   <android.support.constraint.Guideline
       android:id="@+id/guideline_h1"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.625"/>
+      app:layout_constraintGuide_percent="0.53"/>
+
   <android.support.constraint.Guideline
       android:id="@+id/guideline_h2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.75"/>
+      app:layout_constraintGuide_percent="0.68"/>
+
   <android.support.constraint.Guideline
       android:id="@+id/guideline_h3"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.875"/>
+      app:layout_constraintGuide_percent="0.84"/>
   <android.support.constraint.Guideline
       android:id="@+id/guideline_h25"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.25"/>
+      app:layout_constraintGuide_percent="0.2"/>
   <android.support.constraint.Guideline
       android:id="@+id/guideline_vb1"
       android:layout_width="wrap_content"
@@ -302,43 +340,63 @@
       android:layout_height="wrap_content"
       android:orientation="vertical"
       app:layout_constraintGuide_percent="0.5833"/>
+
   <Button
       android:id="@+id/button_back"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="16dp"
       android:layout_marginBottom="16dp"
-      android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
       android:text="Back"
       app:layout_constraintBottom_toTopOf="@+id/guideline_horz"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vb1"
       app:layout_constraintStart_toStartOf="@+id/guideline_vert_25"
       app:layout_constraintTop_toTopOf="@+id/guideline_h25"/>
+
   <Button
       android:id="@+id/button_power"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="16dp"
       android:layout_marginBottom="16dp"
-      android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
       android:text="Power"
       app:layout_constraintBottom_toTopOf="@+id/guideline_horz"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vb2"
       app:layout_constraintStart_toStartOf="@+id/guideline_vb1"
       app:layout_constraintTop_toTopOf="@+id/guideline_h25"/>
+
   <Button
       android:id="@+id/button_home"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="16dp"
       android:layout_marginBottom="16dp"
-      android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
       android:text="Home"
       app:layout_constraintBottom_toTopOf="@+id/guideline_horz"
       app:layout_constraintEnd_toStartOf="@+id/guideline_vert_75"
       app:layout_constraintStart_toStartOf="@+id/guideline_vb2"
       app:layout_constraintTop_toTopOf="@+id/guideline_h25"/>
+
+  <TextView
+      android:id="@+id/textViewL2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="L2"
+      app:layout_constraintBottom_toTopOf="@+id/seekbar_l2"
+      app:layout_constraintEnd_toStartOf="@+id/guideline_vert_50"
+      app:layout_constraintStart_toStartOf="@+id/guideline_vert_25"
+      app:layout_constraintTop_toTopOf="parent"/>
+
+  <TextView
+      android:id="@+id/textViewR2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="R2"
+      app:layout_constraintBottom_toTopOf="@+id/seekbar_r2"
+      app:layout_constraintEnd_toStartOf="@+id/guideline_vert_75"
+      app:layout_constraintStart_toStartOf="@+id/guideline_vert_50"
+      app:layout_constraintTop_toTopOf="parent"/>
 </android.support.constraint.ConstraintLayout>
