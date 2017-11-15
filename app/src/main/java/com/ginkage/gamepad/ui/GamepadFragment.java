@@ -39,8 +39,8 @@ public class GamepadFragment extends Fragment {
     Button buttonY = root.findViewById(R.id.button_y);
     Button buttonL1 = root.findViewById(R.id.button_l1);
     Button buttonR1 = root.findViewById(R.id.button_r1);
-    ImageButton buttonL3 = root.findViewById(R.id.button_l3);
-    ImageButton buttonR3 = root.findViewById(R.id.button_r3);
+    Button buttonL3 = root.findViewById(R.id.button_l3);
+    Button buttonR3 = root.findViewById(R.id.button_r3);
     Button buttonStart = root.findViewById(R.id.button_start);
     Button buttonBack = root.findViewById(R.id.button_back);
     Button buttonHome = root.findViewById(R.id.button_home);
@@ -120,15 +120,9 @@ public class GamepadFragment extends Fragment {
         gamepadState.r1 = state;
         break;
       case R.id.button_l3:
-        if (action == MotionEvent.ACTION_MOVE) {
-          return false;
-        }
         gamepadState.l3 = state;
         break;
       case R.id.button_r3:
-        if (action == MotionEvent.ACTION_MOVE) {
-          return false;
-        }
         gamepadState.r3 = state;
         break;
       case R.id.button_start:
