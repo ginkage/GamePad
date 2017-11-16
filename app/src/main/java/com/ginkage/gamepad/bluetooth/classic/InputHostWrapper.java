@@ -21,7 +21,7 @@ class InputHostWrapper {
           SDP_NAME,
           SDP_DESCRIPTION,
           SDP_PROVIDER,
-          InputHost.SUBCLASS1_COMBO,
+          InputHost.SUBCLASS2_GAMEPAD,
           Constants.HIDD_REPORT_DESC);
 
   private final HidDeviceAppQosSettings qos =
