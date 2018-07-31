@@ -1,5 +1,6 @@
 package com.ginkage.gamepad.bluetooth;
 
+/** The gamepad state structure. */
 public class GamepadState {
   public boolean a;
   public boolean b;

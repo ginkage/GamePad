@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="0dp">
 
@@ -168,7 +169,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+      <ImageView
+          app:layout_aspectRatio="100%"
+          app:layout_widthPercent="40%"
+          android:src="@drawable/background_circle"
+          android:layout_centerInParent="true"/>
+    </android.support.percent.PercentRelativeLayout>
+
+    <!-- ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/background_circle"
@@ -179,7 +190,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent=".4"/>
+        app:layout_constraintWidth_percent=".4"/ -->
 
   </android.support.constraint.ConstraintLayout>
 
@@ -208,7 +219,7 @@
       app:layout_constraintEnd_toStartOf="@+id/guideline_vert_75"
       app:layout_constraintStart_toStartOf="@+id/guideline_vert_50"
       app:layout_constraintTop_toTopOf="@+id/guideline_horz"
-      app:layout_constraintVertical_bias="0.0" />
+      app:layout_constraintVertical_bias="0.0"/>
 
   <android.support.constraint.Guideline
       android:id="@+id/guideline_b1"
@@ -228,7 +239,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.53"/>
+      app:layout_constraintGuide_percent="0.52"/>
 
   <android.support.constraint.Guideline
       android:id="@+id/guideline_h2"

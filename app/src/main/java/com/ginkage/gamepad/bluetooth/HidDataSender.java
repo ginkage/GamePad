@@ -2,57 +2,72 @@ package com.ginkage.gamepad.bluetooth;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothHidDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.support.annotation.MainThread;
-import android.support.annotation.VisibleForTesting;
-import android.support.annotation.WorkerThread;
 import android.util.ArraySet;
-import android.util.Log;
-import com.google.android.clockwork.common.suppliers.LazyContextSupplier;
-import com.google.android.clockwork.utils.BroadcastBus;
-import com.google.android.clockwork.utils.DefaultBroadcastBus;
-import com.ginkage.gamepad.bluetooth.classic.ClassicHidDeviceApp;
-import com.ginkage.gamepad.bluetooth.classic.ClassicHidHostProfile;
-import com.ginkage.gamepad.bluetooth.classic.ClassicServiceStateBus;
+import com.ginkage.gamepad.bluetooth.HidDeviceApp.DeviceStateListener;
+import com.ginkage.gamepad.bluetooth.HidDeviceProfile.ServiceStateListener;
 import java.util.Set;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
 
 /** Central point for enabling the HID SDP record and sending all data. */
-public class HidDataSender implements GamepadDataSender {
-
+public class HidDataSender {
   private static final String TAG = "HidDataSender";
+  private static final Object LOCK = new Object();
+  @Nullable private static HidDataSender instance;
 
   /** Compound interface that listens to both device and service state changes. */
   public interface ProfileListener extends DeviceStateListener, ServiceStateListener {}
 
-  @VisibleForTesting
-  public static final LazyContextSupplier<HidDataSender> INSTANCE =
-      new LazyContextSupplier<>(HidDataSender::createClassicInstance, "HidDataSender");
+  private final ProfileListener profileListener =
+      new ProfileListener() {
+        @Override
+        @MainThread
+        public void onServiceStateChanged(BluetoothHidDevice proxy) {
+          synchronized (lock) {
+            if (proxy != null) {
+              hidDeviceApp.registerApp(proxy);
+            }
+            updateDeviceList();
+            for (ProfileListener listener : listeners) {
+              listener.onServiceStateChanged(proxy);
+            }
+          }
+        }
 
-  private static HidDataSender createClassicInstance(Context appContext) {
-    ClassicHidDeviceApp hidDeviceApp = new ClassicHidDeviceApp();
-    return new HidDataSender(
-        new DefaultBroadcastBus(appContext),
-        hidDeviceApp,
-        new ClassicHidHostProfile(
-            new ClassicServiceStateBus(appContext, BluetoothAdapter.getDefaultAdapter())),
-        hidDeviceApp);
-  }
+        @Override
+        @MainThread
+        public void onDeviceStateChanged(BluetoothDevice device, int state) {
+          synchronized (lock) {
+            if (state == BluetoothProfile.STATE_CONNECTED) {
+              // A new connection was established. If we weren't expecting that, it must be an
+              // incoming one. In that case, we shouldn't try to disconnect from it.
+              requestedDevice = device;
+            }
+            updateDeviceList();
+            for (ProfileListener listener : listeners) {
+              listener.onDeviceStateChanged(device, state);
+            }
+          }
+        }
 
-  private final BroadcastBus.BroadcastListener batteryListener = this::onBatteryChanged;
+        @Override
+        @MainThread
+        public void onAppUnregistered() {
+          synchronized (lock) {
+            for (ProfileListener listener : listeners) {
+              listener.onAppUnregistered();
+            }
+          }
+        }
+      };
 
-  private final BroadcastBus broadcastBus;
   private final HidDeviceApp hidDeviceApp;
-  private final HidHostProfile hidHostProfile;
-  private final DeviceStateBus deviceStateBus;
-
+  private final HidDeviceProfile hidDeviceProfile;
   private final Object lock = new Object();
 
   @GuardedBy("lock")
@@ -64,23 +79,11 @@ public class HidDataSender implements GamepadDataSender {
 
   @GuardedBy("lock")
   @Nullable
-  private BluetoothDevice waitingForDevice;
+  private BluetoothDevice requestedDevice;
 
-  /**
-   * @param hidDeviceApp HID Device App interface.
-   * @param hidHostProfile Interface to manage paired HID Host devices.
-   * @param deviceStateBus Interface to register for device connection state changes.
-   */
-  @VisibleForTesting
-  HidDataSender(
-      BroadcastBus broadcastBus,
-      HidDeviceApp hidDeviceApp,
-      HidHostProfile hidHostProfile,
-      DeviceStateBus deviceStateBus) {
-    this.broadcastBus = checkNotNull(broadcastBus);
-    this.hidDeviceApp = checkNotNull(hidDeviceApp);
-    this.hidHostProfile = checkNotNull(hidHostProfile);
-    this.deviceStateBus = checkNotNull(deviceStateBus);
+  private HidDataSender(Context appContext) {
+    hidDeviceApp = new HidDeviceApp(appContext);
+    hidDeviceProfile = new HidDeviceProfile(appContext);
   }
 
   /**
@@ -90,7 +93,13 @@ public class HidDataSender implements GamepadDataSender {
    * @return Singleton instance.
    */
   public static HidDataSender getInstance(Context context) {
-    return INSTANCE.get(context);
+    Context appContext = checkNotNull(context).getApplicationContext();
+    synchronized (LOCK) {
+      if (instance == null) {
+        instance = new HidDataSender(appContext);
+      }
+      return instance;
+    }
   }
 
   /**
@@ -101,22 +110,21 @@ public class HidDataSender implements GamepadDataSender {
    * @return Interface for managing the paired HID Host devices.
    */
   @MainThread
-  public HidHostProfile register(ProfileListener listener) {
+  public HidDeviceProfile register(ProfileListener listener) {
     synchronized (lock) {
       if (!listeners.add(listener)) {
         // This user is already registered
-        return hidHostProfile;
+        return hidDeviceProfile;
       }
       if (listeners.size() > 1) {
         // There are already some users
-        return hidHostProfile;
+        return hidDeviceProfile;
       }
 
-      hidHostProfile.register(this::onServiceStateChanged);
-      deviceStateBus.register(this::onDeviceStateChanged);
-      broadcastBus.register(batteryListener, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+      hidDeviceProfile.registerServiceListener(profileListener);
+      hidDeviceApp.registerDeviceListener(profileListener);
     }
-    return hidHostProfile;
+    return hidDeviceProfile;
   }
 
   /**
@@ -137,20 +145,17 @@ public class HidDataSender implements GamepadDataSender {
         return;
       }
 
-      broadcastBus.unregister(batteryListener);
-      deviceStateBus.unregister();
+      hidDeviceApp.unregisterDeviceListener();
 
-      for (BluetoothDevice device : hidHostProfile.getConnectedDevices()) {
-        hidHostProfile.disconnect(device);
+      for (BluetoothDevice device : hidDeviceProfile.getConnectedDevices()) {
+        hidDeviceProfile.disconnect(device);
       }
 
-      hidDeviceApp.setDevice(null);
       hidDeviceApp.unregisterApp();
-
-      hidHostProfile.unregister();
+      hidDeviceProfile.unregisterServiceListener();
 
       connectedDevice = null;
-      waitingForDevice = null;
+      requestedDevice = null;
     }
   }
 
@@ -164,7 +169,7 @@ public class HidDataSender implements GamepadDataSender {
   @MainThread
   public void requestConnect(BluetoothDevice device) {
     synchronized (lock) {
-      waitingForDevice = device;
+      requestedDevice = device;
       connectedDevice = null;
 
       updateDeviceList();
@@ -177,40 +182,12 @@ public class HidDataSender implements GamepadDataSender {
     }
   }
 
-  @Override
+  /** Send the Gamepad data to the connected HID Host device. */
   @MainThread
   public void sendGamepad(GamepadState state) {
     synchronized (lock) {
       if (connectedDevice != null) {
         hidDeviceApp.sendGamepad(state);
-      }
-    }
-  }
-
-  @MainThread
-  private void onServiceStateChanged(BluetoothProfile proxy) {
-    synchronized (lock) {
-      if (proxy != null) {
-        hidDeviceApp.registerApp(proxy);
-      }
-      updateDeviceList();
-      for (ProfileListener listener : listeners) {
-        listener.onServiceStateChanged(proxy);
-      }
-    }
-  }
-
-  @MainThread
-  private void onDeviceStateChanged(BluetoothDevice device, int state) {
-    synchronized (lock) {
-      if (state == BluetoothProfile.STATE_CONNECTED) {
-        // A new connection was established. If we weren't expecting that, it must be an
-        // incoming one. In that case, we shouldn't try to disconnect from it.
-        waitingForDevice = device;
-      }
-      updateDeviceList();
-      for (ProfileListener listener : listeners) {
-        listener.onDeviceStateChanged(device, state);
       }
     }
   }
@@ -222,16 +199,16 @@ public class HidDataSender implements GamepadDataSender {
 
       // If we are connected to some device, but want to connect to another (or disconnect
       // completely), then we should disconnect all other devices first.
-      for (BluetoothDevice device : hidHostProfile.getConnectedDevices()) {
-        if (device.equals(waitingForDevice) || device.equals(connectedDevice)) {
+      for (BluetoothDevice device : hidDeviceProfile.getConnectedDevices()) {
+        if (device.equals(requestedDevice) || device.equals(connectedDevice)) {
           connected = device;
         } else {
-          hidHostProfile.disconnect(device);
+          hidDeviceProfile.disconnect(device);
         }
       }
 
       // If there is nothing going on, and we want to connect, then do it.
-      if (hidHostProfile
+      if (hidDeviceProfile
               .getDevicesMatchingConnectionStates(
                   new int[] {
                     BluetoothProfile.STATE_CONNECTED,
@@ -239,29 +216,17 @@ public class HidDataSender implements GamepadDataSender {
                     BluetoothProfile.STATE_DISCONNECTING
                   })
               .isEmpty()
-          && waitingForDevice != null) {
-        hidHostProfile.connect(waitingForDevice);
+          && requestedDevice != null) {
+        hidDeviceProfile.connect(requestedDevice);
       }
 
       if (connectedDevice == null && connected != null) {
         connectedDevice = connected;
-        waitingForDevice = null;
+        requestedDevice = null;
       } else if (connectedDevice != null && connected == null) {
         connectedDevice = null;
       }
-      hidDeviceApp.setDevice(connectedDevice);
-    }
-  }
-
-  @MainThread
-  private void onBatteryChanged(Intent intent) {
-    int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-    int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-    if (level >= 0 && scale > 0) {
-      float batteryLevel = (float) level / (float) scale;
-      hidDeviceApp.sendBatteryLevel(batteryLevel);
-    } else {
-      Log.e(TAG, "Bad battery level data received: level=" + level + ", scale=" + scale);
+      hidDeviceApp.setHostDevice(connectedDevice);
     }
   }
 }

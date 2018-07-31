@@ -2,14 +2,20 @@ package com.ginkage.gamepad.bluetooth;
 
 import java.util.Arrays;
 
-public class GamepadReport {
+/** Helper class to store the gamepad state and retrieve the binary report. */
+class GamepadReport {
   private final byte[] gamepadData = "BDLLRRTT".getBytes();
 
-  public GamepadReport() {
+  GamepadReport() {
     Arrays.fill(gamepadData, (byte) 0);
   }
 
-  public byte[] setValue(GamepadState s) {
+  /**
+   * Convert the state structure to the binary representation.
+   *
+   * @param s The gamepad state to serialize
+   */
+  void setValue(GamepadState s) {
     // 11 buttons: A, B, X, Y, L1, R1, L3, R3, Power, Back, Home (1 bit per button), 1 bit padding
     // 4 bits for D-pad rotation values 0-7 -> 0-315 (360 - 45)
     // 6x 8-bit values for LX/LY, RX/RY, L2/R2
@@ -33,10 +39,9 @@ public class GamepadReport {
     gamepadData[5] = (byte) s.ry;
     gamepadData[6] = (byte) s.l2;
     gamepadData[7] = (byte) s.r2;
-    return gamepadData;
   }
 
-  public byte[] getReport() {
+  byte[] getReport() {
     return gamepadData;
   }
 }

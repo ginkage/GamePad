@@ -21,6 +21,8 @@
     <string name="pref_bluetooth_connect">Connect</string>
     <!-- Action to disconnect from a connected paired Bluetooth device. [CHAR_LIMIT=60] -->
     <string name="pref_bluetooth_disconnect">Disconnect</string>
+    <!-- Action to unpair a paired Bluetooth device. [CHAR_LIMIT=60] -->
+    <string name="pref_bluetooth_unpair">Unpair</string>
     <!-- Action to select a connected paired Bluetooth device. [CHAR_LIMIT=60] -->
     <string name="pref_bluetooth_select">Select</string>
     <!-- Message which is shown on entering the bluetooth settings when bluetooth is enabling. [CHAR_LIMIT=100] -->
