@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/pref_bluetoothAvailable">
+    <PreferenceCategory
+            android:key="pref_bluetoothAvailable"
+            android:title="@string/pref_bluetoothAvailable"
+            android:orderingFromXml="true" />
+    <Preference
+            android:key="pref_bluetoothScan"
+            android:title="@string/pref_bluetoothScan"
+            android:icon="@drawable/ic_search"
+            android:persistent="false" />
+</PreferenceScreen>

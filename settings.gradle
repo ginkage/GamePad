@@ -1,1 +1,1 @@
-include ':app', ':bthid'
+include ':app'

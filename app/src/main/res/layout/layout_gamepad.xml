@@ -169,17 +169,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <android.support.percent.PercentRelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-      <ImageView
-          app:layout_aspectRatio="100%"
-          app:layout_widthPercent="40%"
-          android:src="@drawable/background_circle"
-          android:layout_centerInParent="true"/>
-    </android.support.percent.PercentRelativeLayout>
-
-    <!-- ImageView
+    <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:src="@drawable/background_circle"
@@ -190,7 +180,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent=".4"/ -->
+        app:layout_constraintWidth_percent=".4"/>
 
   </android.support.constraint.ConstraintLayout>
 
