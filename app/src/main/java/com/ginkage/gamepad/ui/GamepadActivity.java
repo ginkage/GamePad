@@ -23,7 +23,7 @@ public class GamepadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_gamepad);
 
-        hidDataSender = HidDataSender.getInstance(this);
+        hidDataSender = HidDataSender.getInstance();
 
         Button buttonA = findViewById(R.id.button_a);
         Button buttonB = findViewById(R.id.button_b);

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.preference.Preference;
@@ -44,8 +45,8 @@ public class PairedDevicesFragment extends PreferenceFragmentCompat {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        hidDataSender = HidDataSender.getInstance(getContext());
-        hidDeviceProfile = hidDataSender.register(profileListener);
+        hidDataSender = HidDataSender.getInstance();
+        hidDeviceProfile = hidDataSender.register(getContext(), profileListener);
         registerStateReceiver();
     }
 
@@ -79,7 +80,7 @@ public class PairedDevicesFragment extends PreferenceFragmentCompat {
     @Override
     public void onDestroy() {
         unregisterStateReceiver();
-        hidDataSender.unregister(profileListener);
+        hidDataSender.unregister(getContext(), profileListener);
         getContext().stopService(new Intent(getContext(), NotificationService.class));
         super.onDestroy();
     }
@@ -174,6 +175,7 @@ public class PairedDevicesFragment extends PreferenceFragmentCompat {
     private final ProfileListener profileListener =
             new ProfileListener() {
                 @Override
+                @MainThread
                 public void onServiceStateChanged(BluetoothHidDevice proxy) {
                     if (proxy != null) {
                         for (final BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
@@ -186,13 +188,12 @@ public class PairedDevicesFragment extends PreferenceFragmentCompat {
                 }
 
                 @Override
-                public void onDeviceStateChanged(BluetoothDevice device, int state) {
+                @MainThread
+                public void onConnectionStateChanged(BluetoothDevice device, int state) {
                     updatePreferenceBondState(device);
 
                     Context context = getContext();
-                    if (state == BluetoothProfile.STATE_DISCONNECTED) {
-                        context.stopService(new Intent(context, NotificationService.class));
-                    } else {
+                    if (state != BluetoothProfile.STATE_DISCONNECTED) {
                         Intent intent = NotificationService.buildIntent(device.getName(), state);
                         intent.setClass(context, NotificationService.class);
                         context.startService(intent);
@@ -205,8 +206,11 @@ public class PairedDevicesFragment extends PreferenceFragmentCompat {
                 }
 
                 @Override
-                public void onAppUnregistered() {
-                    getActivity().finish();
+                @MainThread
+                public void onAppStatusChanged(boolean registered) {
+                    if (!registered) {
+                        getActivity().finish();
+                    }
                 }
             };
 

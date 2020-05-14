@@ -7,14 +7,14 @@ import java.lang.reflect.Method;
 import javax.annotation.Nullable;
 
 /** Helper class that exposes some hidden methods from the Android framework. */
-public class BluetoothUtils {
+class BluetoothUtils {
     private static final String TAG = "BluetoothUtils";
     private static final Method methodCancelBondProcess = lookupCancelBondProcess();
     private static final Method methodRemoveBond = lookupRemoveBond();
     private static final Method methodSetScanMode = lookupSetScanMode();
 
-    /** Cancel an in-progress bonding request started with {@link #createBond}. */
-    public static boolean cancelBondProcess(BluetoothDevice device) {
+    /** Cancel an in-progress bonding request started with {@code createBond}. */
+    static boolean cancelBondProcess(BluetoothDevice device) {
         if (methodCancelBondProcess != null) {
             try {
                 return (Boolean) methodCancelBondProcess.invoke(device);
@@ -31,7 +31,7 @@ public class BluetoothUtils {
      * <p>Delete the link key associated with the remote device, and immediately terminate
      * connections to that device that require authentication and encryption.
      */
-    public static boolean removeBond(BluetoothDevice device) {
+    static boolean removeBond(BluetoothDevice device) {
         if (methodRemoveBond != null) {
             try {
                 return (Boolean) methodRemoveBond.invoke(device);
@@ -52,7 +52,7 @@ public class BluetoothUtils {
      * </code> seconds. For example, 120 seconds should be enough for a remote device to initiate
      * and complete its discovery process.
      */
-    public static boolean setScanMode(BluetoothAdapter adapter, int mode, int duration) {
+    static boolean setScanMode(BluetoothAdapter adapter, int mode, int duration) {
         if (methodSetScanMode != null) {
             try {
                 return (Boolean) methodSetScanMode.invoke(adapter, mode, duration);

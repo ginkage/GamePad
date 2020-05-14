@@ -15,7 +15,7 @@ class GamepadReport {
      *
      * @param s The gamepad state to serialize
      */
-    void setValue(GamepadState s) {
+    byte[] setValue(GamepadState s) {
         // 11 buttons: A, B, X, Y, L1, R1, L3, R3, Power, Back, Home (1 bit per button), 1 bit padding
         // 4 bits for D-pad rotation values 0-7 -> 0-315 (360 - 45)
         // 6x 8-bit values for LX/LY, RX/RY, L2/R2
@@ -39,9 +39,20 @@ class GamepadReport {
         gamepadData[5] = (byte) s.ry;
         gamepadData[6] = (byte) s.l2;
         gamepadData[7] = (byte) s.r2;
+        return gamepadData;
     }
 
     byte[] getReport() {
     return gamepadData;
   }
+
+    /** Interface to send the Mouse data with. */
+    public interface GamepadDataSender {
+        /**
+         * Send the Gamepad data to the connected HID Host device.
+         *
+         * @param state The current state of the gamepad.
+         */
+        void sendGamepad(GamepadState state);
+    }
 }

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceGroup;
@@ -65,8 +66,8 @@ public class AvailableDevicesFragment extends PreferenceFragmentCompat {
 
         Context context = getContext();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        hidDataSender = HidDataSender.getInstance(context);
-        hidDeviceProfile = hidDataSender.register(profileListener);
+        hidDataSender = HidDataSender.getInstance();
+        hidDeviceProfile = hidDataSender.register(context, profileListener);
 
         initiateScanDevices = findPreference(KEY_PREF_BLUETOOTH_SCAN);
         availableDevices = (PreferenceGroup) findPreference(KEY_PREF_BLUETOOTH_AVAILABLE);
@@ -110,7 +111,7 @@ public class AvailableDevicesFragment extends PreferenceFragmentCompat {
     @Override
     public void onDestroy() {
         unregisterStateReceiver();
-        hidDataSender.unregister(profileListener);
+        hidDataSender.unregister(getContext(), profileListener);
         super.onDestroy();
     }
 
@@ -295,17 +296,22 @@ public class AvailableDevicesFragment extends PreferenceFragmentCompat {
     private final ProfileListener profileListener =
             new ProfileListener() {
                 @Override
+                @MainThread
                 public void onServiceStateChanged(BluetoothHidDevice proxy) {}
 
                 @Override
-                public void onDeviceStateChanged(BluetoothDevice device, int state) {
+                @MainThread
+                public void onConnectionStateChanged(BluetoothDevice device, int state) {
                     final BluetoothDevicePreference pref = findOrAllocateDevicePreference(device);
                     pref.updateProfileConnectionState();
                 }
 
                 @Override
-                public void onAppUnregistered() {
-                    getActivity().finish();
+                @MainThread
+                public void onAppStatusChanged(boolean registered) {
+                    if (!registered) {
+                        getActivity().finish();
+                    }
                 }
             };
 

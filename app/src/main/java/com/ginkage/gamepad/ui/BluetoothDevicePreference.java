@@ -32,7 +32,7 @@ class BluetoothDevicePreference extends DialogPreference {
         super(context);
         this.device = checkNotNull(device);
         this.hidDeviceProfile = checkNotNull(hidDeviceProfile);
-        this.hidDataSender = HidDataSender.getInstance(context);
+        this.hidDataSender = HidDataSender.getInstance();
 
         setKey(this.device.getAddress());
         setIcon(R.drawable.ic_cc_settings_bluetooth);

@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 
 /** Wrapper for BluetoothHidDevice profile that manages paired HID Host devices. */
 public class HidDeviceProfile {
+
     private static final String TAG = "HidDeviceProfile";
-    private static final int PROFILE_ID = BluetoothProfile.HID_DEVICE;
     private static final ParcelUuid HOGP_UUID =
             ParcelUuid.fromString("00001812-0000-1000-8000-00805f9b34fb");
     private static final ParcelUuid HID_UUID =
@@ -30,18 +30,15 @@ public class HidDeviceProfile {
          *
          * @param proxy Profile proxy object or {@code null} if the service was disconnected.
          */
+        @MainThread
         void onServiceStateChanged(BluetoothHidDevice proxy);
     }
 
-    private final Context context;
     private final BluetoothAdapter bluetoothAdapter;
-
     @Nullable private ServiceStateListener serviceStateListener;
     @Nullable private BluetoothHidDevice service;
 
-    /** @param appContext Context that is required to establish the service connection. */
-    HidDeviceProfile(Context appContext) {
-        this.context = checkNotNull(appContext);
+    HidDeviceProfile() {
         this.bluetoothAdapter = checkNotNull(BluetoothAdapter.getDefaultAdapter());
     }
 
@@ -53,7 +50,7 @@ public class HidDeviceProfile {
      */
     public boolean isProfileSupported(BluetoothDevice device) {
         // If a device reports itself as a HID Device, then it isn't a HID Host.
-        ParcelUuid[] uuidArray = checkNotNull(device).getUuids();
+        ParcelUuid[] uuidArray = device.getUuids();
         if (uuidArray != null) {
             for (ParcelUuid uuid : uuidArray) {
                 if (HID_UUID.equals(uuid) || HOGP_UUID.equals(uuid)) {
@@ -65,28 +62,17 @@ public class HidDeviceProfile {
     }
 
     /**
-     * Examine the device for current connection status.
-     *
-     * @param device Remote Bluetooth device to examine.
-     * @return A Bluetooth profile connection state.
-     */
-    @MainThread
-    public int getConnectionState(BluetoothDevice device) {
-        if (service == null) {
-            return BluetoothProfile.STATE_DISCONNECTED;
-        }
-        return service.getConnectionState(checkNotNull(device));
-    }
-
-    /**
      * Initiate the connection to the profile proxy service.
      *
+     * @param context Context that is required to establish the service connection.
      * @param listener Callback that will receive the profile proxy object.
      */
     @MainThread
-    void registerServiceListener(ServiceStateListener listener) {
+    void registerServiceListener(Context context, ServiceStateListener listener) {
+        context = checkNotNull(context).getApplicationContext();
         serviceStateListener = checkNotNull(listener);
-        bluetoothAdapter.getProfileProxy(context, new ServiceListener(), PROFILE_ID);
+        bluetoothAdapter.getProfileProxy(
+                context, new ServiceListener(), BluetoothProfile.HID_DEVICE);
     }
 
     /** Close the profile service connection. */
@@ -94,13 +80,26 @@ public class HidDeviceProfile {
     void unregisterServiceListener() {
         if (service != null) {
             try {
-                bluetoothAdapter.closeProfileProxy(PROFILE_ID, service);
-                service = null;
+                bluetoothAdapter.closeProfileProxy(BluetoothProfile.HID_DEVICE, service);
             } catch (Throwable t) {
                 Log.w(TAG, "Error cleaning up proxy", t);
             }
+            service = null;
         }
         serviceStateListener = null;
+    }
+
+    /**
+     * Examine the device for current connection status.
+     *
+     * @param device Remote Bluetooth device to examine.
+     * @return A Bluetooth profile connection state.
+     */
+    public int getConnectionState(BluetoothDevice device) {
+        if (service == null) {
+            return BluetoothProfile.STATE_DISCONNECTED;
+        }
+        return service.getConnectionState(checkNotNull(device));
     }
 
     /**
@@ -162,7 +161,7 @@ public class HidDeviceProfile {
             if (serviceStateListener != null) {
                 serviceStateListener.onServiceStateChanged(service);
             } else {
-                bluetoothAdapter.closeProfileProxy(PROFILE_ID, proxy);
+                bluetoothAdapter.closeProfileProxy(BluetoothProfile.HID_DEVICE, proxy);
             }
         }
 
