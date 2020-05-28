@@ -2,8 +2,8 @@ package com.ginkage.gamepad.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceDialogFragmentCompat;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceDialogFragmentCompat;
 
 public class PairedDeviceDialog extends PreferenceDialogFragmentCompat {
     public static final String TAG = "PairedDeviceDialog";

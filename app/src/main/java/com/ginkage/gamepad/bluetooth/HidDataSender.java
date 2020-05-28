@@ -10,7 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
-import android.support.annotation.MainThread;
+import androidx.annotation.MainThread;
 import android.util.ArraySet;
 import android.util.Log;
 import com.ginkage.gamepad.bluetooth.HidDeviceProfile.ServiceStateListener;

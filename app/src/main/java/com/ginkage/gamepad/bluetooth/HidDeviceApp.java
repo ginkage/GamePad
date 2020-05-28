@@ -7,9 +7,9 @@ import android.bluetooth.BluetoothHidDevice;
 import android.bluetooth.BluetoothProfile;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.BinderThread;
-import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
+import androidx.annotation.BinderThread;
+import androidx.annotation.MainThread;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 /** Helper class that holds all data about the HID Device's SDP record and wraps data sending. */

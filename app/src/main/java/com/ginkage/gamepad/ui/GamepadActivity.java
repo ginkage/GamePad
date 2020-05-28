@@ -1,8 +1,12 @@
 package com.ginkage.gamepad.ui;
 
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothHidDevice;
+import android.bluetooth.BluetoothProfile;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.MainThread;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +21,27 @@ public class GamepadActivity extends AppCompatActivity {
 
     private final GamepadState gamepadState = new GamepadState();
     private HidDataSender hidDataSender;
+    private HidDataSender.ProfileListener profileListener = new HidDataSender.ProfileListener() {
+        @Override
+        @MainThread
+        public void onConnectionStateChanged(BluetoothDevice device, int state) {
+            if (state == BluetoothProfile.STATE_DISCONNECTED) {
+                finish();
+            }
+        }
+
+        @Override
+        @MainThread
+        public void onAppStatusChanged(boolean registered) {
+            if (!registered) {
+                finish();
+            }
+        }
+
+        @Override
+        @MainThread
+        public void onServiceStateChanged(BluetoothHidDevice proxy) {}
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,6 +49,7 @@ public class GamepadActivity extends AppCompatActivity {
         setContentView(R.layout.layout_gamepad);
 
         hidDataSender = HidDataSender.getInstance();
+        hidDataSender.register(this, profileListener);
 
         Button buttonA = findViewById(R.id.button_a);
         Button buttonB = findViewById(R.id.button_b);
@@ -93,6 +119,12 @@ public class GamepadActivity extends AppCompatActivity {
                         View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                                 | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hidDataSender.unregister(this, profileListener);
     }
 
     public boolean onTouchButton(View v, MotionEvent event) {
