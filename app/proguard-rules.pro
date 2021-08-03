@@ -5,4 +5,4 @@
 -dontwarn org.checkerframework.checker.**
 -dontwarn afu.org.checkerframework.checker.**
 
--keep class * extends android.support.v7.preference.PreferenceFragmentCompat
+-keep class * extends androidx.preference.PreferenceFragmentCompat
