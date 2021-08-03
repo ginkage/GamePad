@@ -33,6 +33,7 @@ public class MainSettingsActivity extends CommonPreferenceActivity {
                 for (Map.Entry<String, Boolean> entry : result.entrySet()) {
                     if (!entry.getValue()) {
                         finish();
+                        return;
                     }
                 }
                 startPreferenceFragment(new PairedDevicesFragment(), false);
